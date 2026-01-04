@@ -1,17 +1,29 @@
 """
 Fiscal-Sentinel FastAPI Backend
-Main API endpoints for all 4 fraud detection modules
+Asynchronous API endpoints for Advanced Algorithmic Fraud Detection
+Production-level performance with async/await patterns
 """
 
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
+import sys
+from pathlib import Path
+
+# Add parent directory to path for config import
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import SystemConfig
 
 from app.modules import tender, price, ghost, welfare
 
-app = FastAPI(title="Fiscal-Sentinel API", version="1.0.0")
+# Initialize FastAPI with production config
+app = FastAPI(
+    title=SystemConfig.API_TITLE,
+    version=SystemConfig.API_VERSION,
+    description="High-performance fraud detection using Graph Theory, NLP, and Statistical Analysis"
+)
 
-# Enable CORS for Streamlit
+# Enable CORS for Streamlit dashboard
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,20 +34,28 @@ app.add_middleware(
 
 
 @app.get("/")
-def root():
+async def root():
+    """System status and available modules"""
     return {
-        "service": "Fiscal-Sentinel API",
-        "version": "1.0.0",
-        "status": "online",
-        "modules": ["tender", "price", "ghost", "welfare"]
+        "service": SystemConfig.API_TITLE,
+        "version": SystemConfig.API_VERSION,
+        "status": "ONLINE - Defense Systems Active",
+        "async_enabled": SystemConfig.ENABLE_ASYNC,
+        "modules": {
+            "tender_watch": "NLP/Vector Embeddings",
+            "graph_fraud": "Connected Components/Centrality",
+            "price_guard": "Statistical Analysis (2σ)",
+            "welfare_shield": "Fuzzy String Matching"
+        }
     }
 
 
 @app.post("/api/tender")
 async def analyze_tenders(files: List[UploadFile] = File(...)):
     """
-    Analyze tender PDFs for collusion
-    Accepts multiple PDF files
+    Tender-Watch: Analyze tender PDFs for collusion using vector embeddings
+    Algorithm: 384-dimensional cosine similarity in high-dimensional space
+    Accepts: Multiple PDF files
     """
     pdf_bytes_list = []
     for file in files:
@@ -49,8 +69,9 @@ async def analyze_tenders(files: List[UploadFile] = File(...)):
 @app.post("/api/price")
 async def analyze_invoice(file: UploadFile = File(...)):
     """
-    Analyze invoice image for over-invoicing
-    Accepts image file (PNG, JPG)
+    Price-Guard: Analyze invoice for over-invoicing using statistical analysis
+    Algorithm: 2σ standard deviation detection + weighted Levenshtein distance
+    Accepts: Image file (PNG, JPG)
     """
     image_bytes = await file.read()
     result = price.analyze_invoice(image_bytes)
@@ -60,8 +81,9 @@ async def analyze_invoice(file: UploadFile = File(...)):
 @app.post("/api/ghost")
 async def analyze_payroll(file: UploadFile = File(...)):
     """
-    Analyze payroll CSV for ghost employees
-    Accepts CSV file with columns: Employee_ID, Name, Mobile, Bank_Acc
+    Ghost-Hunter: Detect ghost employees using graph theory
+    Algorithm: Connected components + betweenness centrality for kingpin detection
+    Accepts: CSV file with columns: Employee_ID, Name, Mobile, Bank_Acc
     """
     csv_bytes = await file.read()
     result = ghost.analyze_payroll(csv_bytes)
@@ -74,8 +96,9 @@ async def analyze_welfare(
     death_file: UploadFile = File(...)
 ):
     """
-    Cross-check pension list against death registry
-    Accepts two CSV files: pension list and death registry
+    Welfare-Shield: Cross-check pension list against death registry
+    Algorithm: Fuzzy string matching (handles NP-Hard string alignment)
+    Accepts: Two CSV files - pension list and death registry
     """
     pension_bytes = await pension_file.read()
     death_bytes = await death_file.read()
