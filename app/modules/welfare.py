@@ -42,7 +42,7 @@ def analyze_welfare(pension_csv_bytes, death_csv_bytes):
             
             # Get full records
             pension_record = df_pension.iloc[idx].to_dict()
-            death_record = df_death[df_death['Name'] == matched_name].iloc[0].to_dict()
+            death_record = df_death[df_death[death_name_col] == matched_name].iloc[0].to_dict()
             
             flagged_beneficiaries.append({
                 'beneficiary_id': pension_record.get('Beneficiary_ID', 'N/A'),

@@ -44,11 +44,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config import TenderWatchConfig
 
-# Load the model once (singleton pattern for performance)
-# all-MiniLM-L6-v2: 384-dimensional sentence embeddings, 22.7M parameters
-print("Loading SentenceTransformer model (384-dim embeddings)...")
-model = SentenceTransformer(TenderWatchConfig.MODEL_NAME)
-print(f"✓ Model loaded: {TenderWatchConfig.MODEL_NAME}")
+# Lazy-load model to avoid blocking server startup
+_model = None
+
+def get_model():
+    """Lazy load the SentenceTransformer model"""
+    global _model
+    if _model is None:
+        print("Loading SentenceTransformer model (384-dim embeddings)...")
+        _model = SentenceTransformer(TenderWatchConfig.MODEL_NAME)
+        print(f"✓ Model loaded: {TenderWatchConfig.MODEL_NAME}")
+    return _model
 
 
 def extract_text_from_pdf(pdf_bytes):
@@ -96,7 +102,7 @@ def analyze_tenders(pdf_files_bytes):
     # Transforms text into 384-dimensional vector space
     # Each dimension captures semantic features learned from massive text corpus
     print("Generating 384-dimensional embeddings...")
-    embeddings = model.encode(texts, batch_size=TenderWatchConfig.BATCH_SIZE)
+    embeddings = get_model().encode(texts, batch_size=TenderWatchConfig.BATCH_SIZE)
     print(f"✓ Generated embeddings shape: {embeddings.shape}")  # Should be (n, 384)
     
     # STEP 3: Compute Cosine Similarity Matrix
