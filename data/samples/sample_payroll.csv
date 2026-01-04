@@ -1,0 +1,16 @@
+employee_id,name,mobile,address,bank_account
+E001,Rajesh Kumar,9876543210,123 MG Road Delhi,ACC12345
+E002,Priya Sharma,9876543211,456 Park Street Kolkata,ACC23456
+E003,Amit Patel,9876543212,789 Anna Salai Chennai,ACC34567
+E004,Sneha Verma,9876543213,101 Brigade Road Bangalore,ACC45678
+E005,Vikram Singh,9876543214,202 Marine Drive Mumbai,ACC56789
+E006,Ghost Employee 1,9876543210,123 MG Road Delhi,ACC12345
+E007,Ghost Employee 2,9876543210,123 MG Road Delhi,ACC12345
+E008,Fake Person A,9999999999,999 Fake Street,ACC99999
+E009,Fake Person B,9999999999,999 Fake Street,ACC99999
+E010,Fake Person C,9999999999,999 Fake Street,ACC99999
+E011,Fake Person D,9999999999,999 Fake Street,ACC99999
+E012,Fake Person E,9999999999,999 Fake Street,ACC99999
+E013,Fake Person F,9999999999,999 Fake Street,ACC99999
+E014,Legitimate Worker,9876543220,303 Real Address,ACC77777
+E015,Another Employee,9876543221,404 Actual Street,ACC88888

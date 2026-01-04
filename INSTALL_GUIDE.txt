@@ -1,0 +1,199 @@
+================================================================================
+                INSTALLATION & SETUP INSTRUCTIONS
+                    Fiscal-Sentinel Project
+================================================================================
+
+🎯 QUICKEST PATH TO GET STARTED (Choose One):
+
+METHOD 1: Python Script (Recommended)
+--------------------------------------
+python install.py
+
+This will automatically install all dependencies one by one.
+
+
+METHOD 2: Batch File (Windows)
+-------------------------------
+install_dependencies.bat
+
+Installs all packages via pip commands.
+
+
+METHOD 3: Requirements File (Manual)
+------------------------------------
+pip install -r requirements.txt
+
+Note: PyTorch may need special handling:
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+
+================================================================================
+STEP-BY-STEP INSTALLATION GUIDE
+================================================================================
+
+STEP 1: Ensure Python is Installed
+-----------------------------------
+python --version
+
+Should show Python 3.8 or higher.
+If not installed, download from: https://www.python.org/downloads/
+
+
+STEP 2: Install Dependencies
+-----------------------------
+Choose one of the methods above. We recommend:
+
+python install.py
+
+This will take 5-10 minutes on first run.
+
+
+STEP 3: Verify Installation
+----------------------------
+python verify_project.py
+
+Should show "ALL CHECKS PASSED"
+
+
+STEP 4: Start the Dashboard
+----------------------------
+streamlit run streamlit_app.py
+
+OR use the batch file:
+run_dashboard.bat
+
+Browser will open to http://localhost:8501
+
+
+================================================================================
+TROUBLESHOOTING COMMON ISSUES
+================================================================================
+
+Issue 1: "ModuleNotFoundError: No module named 'pdfplumber'"
+-------------------------------------------------------------
+Solution: Dependencies not installed yet
+Run: python install.py
+
+
+Issue 2: "pytesseract.pytesseract.TesseractNotFoundError"
+----------------------------------------------------------
+Solution: Tesseract OCR not installed (separate from Python)
+Download: https://github.com/UB-Mannheim/tesseract/wiki
+Install the .exe file, then add to PATH
+
+
+Issue 3: "torch installation fails"
+------------------------------------
+Solution: Install CPU version manually:
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+
+Issue 4: "Streamlit won't start"
+---------------------------------
+Solution: Check if dependencies are installed:
+python -c "import streamlit; print('OK')"
+
+If error, reinstall:
+pip install streamlit==1.28.0
+
+
+Issue 5: "Port 8501 already in use"
+------------------------------------
+Solution: Kill existing Streamlit process or use different port:
+streamlit run streamlit_app.py --server.port 8502
+
+
+Issue 6: "transformers/DistilBERT download fails"
+--------------------------------------------------
+Solution: First run downloads ~250MB model - needs internet
+Wait for download to complete (2-3 minutes)
+
+
+================================================================================
+MINIMAL INSTALL (For Quick Testing)
+================================================================================
+
+If you want to test quickly without all AI features:
+
+pip install streamlit pandas networkx rapidfuzz beautifulsoup4
+
+This installs just the lightweight packages. Some modules won't work
+but you can see the UI.
+
+
+================================================================================
+FULL DEPENDENCY LIST
+================================================================================
+
+Core Web Framework:
+- fastapi==0.95.2
+- uvicorn[standard]==0.22.0
+- streamlit==1.28.0
+
+Data Processing:
+- pandas==2.2.2
+- numpy==1.26.4
+
+AI/ML (Heavy):
+- torch==2.2.0
+- transformers==4.35.0
+- scikit-learn==1.3.2
+
+Document Processing:
+- pdfplumber==0.7.6
+- pytesseract==0.3.10
+- pillow==10.1.0
+
+Graph Analytics:
+- networkx==3.2
+- neo4j==5.8.0 (optional)
+
+NLP:
+- spacy==3.6.0
+
+Utilities:
+- beautifulsoup4==4.12.2
+- rapidfuzz==2.15.1
+- requests==2.31.0
+
+
+================================================================================
+VERIFICATION CHECKLIST
+================================================================================
+
+After installation, verify:
+
+✓ Python accessible: python --version
+✓ Dependencies installed: pip list | findstr streamlit
+✓ Project verified: python verify_project.py
+✓ Dashboard starts: streamlit run streamlit_app.py
+
+If all pass → Ready to demo!
+
+
+================================================================================
+GETTING HELP
+================================================================================
+
+1. Read error messages carefully
+2. Check TROUBLESHOOTING section above
+3. Review README.md for more details
+4. Check sample data exists in data/samples/
+5. Ensure you're in the correct directory
+
+
+================================================================================
+NEXT STEPS AFTER INSTALLATION
+================================================================================
+
+1. Start dashboard: streamlit run streamlit_app.py
+2. Open browser to: http://localhost:8501
+3. Try each module with sample data from data/samples/
+4. Read DEMO_GUIDE.md for presentation tips
+
+
+================================================================================
+
+Good luck with your demo! 🚀
+
+================================================================================
