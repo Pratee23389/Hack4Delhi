@@ -140,20 +140,45 @@ with tab3:
                         result = response.json()
                         st.success(f"Analysis Complete! Status: {result['status']}")
                         
-                        col1, col2 = st.columns(2)
-                        col1.metric("Total Employees", result['total_employees'])
-                        col2.metric("Flagged Employees", result['num_flagged_employees'])
+                        # Display metrics with new format
+                        col1, col2, col3, col4 = st.columns(4)
+                        col1.metric("Total Employees", result.get('total_employees', 0))
+                        col2.metric("Suspicious Clusters", result.get('suspicious_clusters', 0))
+                        col3.metric("Graph Density", f"{result.get('graph_metrics', {}).get('overall_density', 0):.4f}")
+                        col4.metric("Integrity Score", f"{result.get('integrity_score', 100):.1f}%")
                         
-                        st.json(result)
+                        # Show graph metrics
+                        if 'graph_metrics' in result:
+                            st.info(f"📊 **Graph Analysis**: {result['graph_metrics']['total_nodes']} nodes, "
+                                   f"{result['graph_metrics']['total_edges']} edges | "
+                                   f"Algorithm: {result['graph_metrics'].get('centrality_algorithm', 'betweenness').title()} Centrality")
                         
-                        if result['suspicious_clusters']:
-                            st.error(f"⚠️ {len(result['suspicious_clusters'])} SUSPICIOUS CLUSTER(S) DETECTED!")
-                            for i, cluster in enumerate(result['suspicious_clusters'], 1):
-                                with st.expander(f"🚨 Cluster {i}: {cluster['cluster_size']} employees"):
-                                    st.write(f"**Employee IDs:** {', '.join(cluster['employee_ids'])}")
+                        # Display clusters with enhanced information
+                        if result.get('clusters'):
+                            st.error(f"⚠️ {len(result['clusters'])} FRAUD RING(S) DETECTED!")
+                            for cluster in result['clusters']:
+                                severity_color = "🔴" if cluster['severity'] == 'CRITICAL' else "🟠" if cluster['severity'] == 'HIGH' else "🟡"
+                                with st.expander(f"{severity_color} Cluster {cluster['cluster_id']}: {cluster['size']} employees - {cluster['severity']}"):
+                                    col_a, col_b = st.columns(2)
+                                    col_a.metric("Cluster Size", cluster['size'])
+                                    col_b.metric("Graph Density", f"{cluster['graph_density']:.1%}")
+                                    
+                                    # Show kingpin information
+                                    if 'kingpin' in cluster:
+                                        st.warning(f"👑 **Kingpin Identified**: {cluster['kingpin']['name']} "
+                                                 f"(ID: {cluster['kingpin']['employee_id']}) | "
+                                                 f"Centrality Score: {cluster['kingpin']['centrality_score']:.4f}")
+                                        st.caption(f"ℹ️ {cluster['kingpin']['explanation']}")
+                                    
+                                    st.write(f"**Algorithm**: {cluster.get('algorithm', 'Graph Analysis')}")
+                                    st.write(f"**Explanation**: {cluster.get('explanation', '')}")
                                     st.dataframe(cluster['employees'])
                         else:
-                            st.success("✅ No suspicious clusters detected")
+                            st.success("✅ No suspicious clusters detected - payroll appears clean")
+                        
+                        # Show full JSON in expander
+                        with st.expander("📋 View Full API Response"):
+                            st.json(result)
                     else:
                         st.error(f"Error: {response.text}")
                 except Exception as e:

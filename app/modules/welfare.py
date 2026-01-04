@@ -17,9 +17,13 @@ def analyze_welfare(pension_csv_bytes, death_csv_bytes):
     df_pension = pd.read_csv(BytesIO(pension_csv_bytes))
     df_death = pd.read_csv(BytesIO(death_csv_bytes))
     
+    # Detect name column (handle different column names)
+    pension_name_col = 'Name' if 'Name' in df_pension.columns else 'Beneficiary_Name'
+    death_name_col = 'Deceased_Name' if 'Deceased_Name' in df_death.columns else 'Name'
+    
     # Get lists of names
-    pension_names = df_pension['Name'].tolist()
-    death_names = df_death['Name'].tolist()
+    pension_names = df_pension[pension_name_col].tolist()
+    death_names = df_death[death_name_col].tolist()
     
     # Find matches using fuzzy matching
     flagged_beneficiaries = []
