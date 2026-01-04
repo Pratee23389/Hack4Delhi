@@ -31,7 +31,7 @@ def create_adversarial_tenders():
     # Base text with technical specifications
     base_sections = {
         "header": "GOVERNMENT OF INDIA - MINISTRY OF INFRASTRUCTURE\nTENDER DOCUMENT FOR HIGHWAY CONSTRUCTION PROJECT\n\n",
-        "project": "Project Code: INFRA-2025-NH47-EXT\nEstimated Cost: ₹45,00,00,000 (Forty-Five Crores)\nCompletion Time: 24 Months\n\n",
+        "project": "Project Code: INFRA-2025-NH47-EXT\nEstimated Cost: Rs. 45,00,00,000 (Forty-Five Crores)\nCompletion Time: 24 Months\n\n",
         "scope": "SCOPE OF WORK:\n",
         "scope_items": [
             "Construction of 4-lane divided carriageway with paved shoulders",
@@ -50,7 +50,7 @@ def create_adversarial_tenders():
         ],
         "financial": "\n\nFINANCIAL TERMS:\n",
         "financial_items": [
-            "Earnest Money Deposit: 2% of tender value (₹90,00,000)",
+            "Earnest Money Deposit: 2% of tender value (Rs. 90,00,000)",
             "Performance Guarantee: 10% of contract value within 15 days",
             "Payment Schedule: Monthly running bills with 10% retention",
             "Price Escalation: Linked to WPI-Infrastructure Index quarterly",
@@ -59,8 +59,8 @@ def create_adversarial_tenders():
         "eligibility": "\n\nELIGIBILITY CRITERIA:\n",
         "eligibility_items": [
             "Minimum 10 years experience in highway construction projects",
-            "Annual turnover: ₹75 crores minimum for last 3 fiscal years",
-            "Completed at least 3 similar projects worth ₹30 crores each",
+            "Annual turnover: Rs. 75 crores minimum for last 3 fiscal years",
+            "Completed at least 3 similar projects worth Rs. 30 crores each",
             "ISO 9001:2015 and ISO 14001:2015 certification mandatory",
             "Valid registration with PWD/CPWD Class-1 contractor category"
         ]
@@ -121,7 +121,7 @@ def create_adversarial_tenders():
         
         pdf.set_font("Arial", "", 10)
         for item in base_sections["scope_items"]:
-            text = f"• {item}"
+            text = f"- {item}"  # Use ASCII dash instead of bullet
             if use_synonyms:
                 for original, replacement in synonyms.items():
                     text = text.replace(original, replacement)
@@ -134,7 +134,7 @@ def create_adversarial_tenders():
         
         pdf.set_font("Arial", "", 10)
         for item in base_sections["tech_items"]:
-            text = f"• {item}"
+            text = f"- {item}"  # Use ASCII dash
             if use_synonyms:
                 for original, replacement in synonyms.items():
                     text = text.replace(original, replacement)
@@ -150,7 +150,7 @@ def create_adversarial_tenders():
         
         pdf.set_font("Arial", "", 10)
         for item in base_sections["financial_items"]:
-            text = f"• {item}"
+            text = f"- {item}"  # Use ASCII dash
             if use_synonyms:
                 for original, replacement in synonyms.items():
                     text = text.replace(original, replacement)
@@ -163,7 +163,7 @@ def create_adversarial_tenders():
         
         pdf.set_font("Arial", "", 10)
         for item in base_sections["eligibility_items"]:
-            text = f"• {item}"
+            text = f"- {item}"  # Use ASCII dash
             if use_synonyms:
                 for original, replacement in synonyms.items():
                     text = text.replace(original, replacement)
